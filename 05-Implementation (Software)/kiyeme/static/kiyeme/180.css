@@ -1,0 +1,42 @@
+.center {
+   text-align: center;
+}
+
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+
+
+label{
+	display: inline-block;
+    float: center;
+    width: 70px;
+    text-align: right;
+	font-family: sans-serif;
+	color: white;	
+}
+input {
+  display: inline-block;
+  float: center;
+}
+
+body
+{
+	background-color: #003e77;
+}
+h1
+{
+	font-family: sans-serif;
+	color: white;
+}
+p, h3{
+	font-family: sans-serif;
+	color: white;
+}
+
+#wifi{
+    font-size: 2em;
+}

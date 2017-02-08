@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+	<title>Wi-Finder</title>
+    {% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/180.css' %}">
+	
+</head>
+
+<body>
+<div class="center">
+    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
+</div>
+
+<h1 style="text-align:center;">Wi-Finder</h1>
+<p style="text-align:center;">A CS180 Project by 2 Sabaw Guys</p>
+
+<div class="center" id="result">
+    <p>
+        The best wi-fi we found for you right now is
+    </p>
+    <h3 id="wifi">
+        {{ wifi }}
+    </h3>
+</div>
+
+ <div class = "center">
+    <form action="{% url 'thanks' %}" method="POST">
+        {% csrf_token %}
+        <br /><label>Rating:</label><input type="text" name="rate"><br />
+        {% for item in res %}
+        <input type="hidden" name="a{{forloop.counter}}" value="{{ item }}"></input>
+        {% endfor %}
+        <input type="submit" value="Submit" style = "size: 200px">
+	</form>
+ </div>
+ <br /> <br />
+<div class = "center" id="Instructions" "style = size: 500px;">
+<h1 style="text-align:center;">Instructions</h1>
+<p style = "text-align: center;">
+Please input the rating for the Wifi from -5 to 5.
+
+</p>
+</div>
+
+
+</body>
+</body>
+
+</html>
