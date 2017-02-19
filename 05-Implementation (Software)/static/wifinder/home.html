@@ -2,7 +2,7 @@
 <head>
 	<title>Wi-Finder</title>
     {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/180.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
 	<script>
 	    function test(){
             return true;
@@ -22,7 +22,7 @@
 </div>
 
 <h1 style="text-align:center;">Wi-Finder</h1>
-<p style="text-align:center;">A CS180 Project by 2 Sabaw Guys</p>
+<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
 
  <div class = "center">
     {% if error %}
@@ -32,8 +32,8 @@
     {% csrf_token %}
     <select name="loc">
         <option for="loc" value="">Select a location...</option>
-        {% for loc in locations %}
-        <option for="loc" value="{{ loc }}">{{ loc }}</option>
+        {% for id,loc in locations.items %}
+        <option for="loc" value="{{ id }}">{{ loc }}</option>
         {% endfor %}
     </select>
     <button onclick="return test()" style="size: 200px">Go</button>
@@ -41,14 +41,6 @@
 	</form>
  </div>
  <br /> <br />
-<div class = "center" id="Instructions" "style = size: 500px;">
-<h1 style="text-align:center;">Instructions</h1>
-<p style = "text-align: center;">
-Input the following values with this format: <br />
-Day - M/T/W/Th/F <br />
-Time - From 07:00 to 17:30 only
-</p>
-</div>
 
 
 </body>
