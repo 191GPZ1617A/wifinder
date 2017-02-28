@@ -51,9 +51,47 @@ def results(request):
         
         c.close()
         
-        return render(request,"wifinder/results.html",{"results":data})
+        return render(request,"wifinder/results.html",{"results":data,"src":request.POST["loc"]})
 #    except Exception:
 #        return index(request)
+
+def wifi(request,src,dst):
+    print request.POST.viewitems()
+    db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder192")
+    c = db.cursor()
+    res = c.execute("""
+        SELECT lat, lng
+        FROM locations
+        WHERE locID in (
+            SELECT location
+            FROM wifinames
+            WHERE id = %s
+        )
+        ;""" % (int(src))
+    )
+    res = c.execute("""
+        SELECT name, wifiid, AVG(rating), dist.distance AS distance
+        FROM ratings JOIN wifinames ON (ratings.wifiid = wifinames.id) JOIN (
+            SELECT locID, (
+                6371 * acos(
+                    cos(radians({1})) *
+                    cos(radians(lat)) *
+                    cos(radians(lng) - radians({2})) +
+                    sin(radians({1})) *
+                    sin(radians(lat))
+                )
+            ) AS distance
+            FROM locations
+        ) dist ON (dist.locID = wifinames.location)
+        WHERE wifiid = {0}
+        ;""".format(dst,*(c.fetchall()[0]))
+    )
+    data = [[row[0],int(row[1]),int(row[2]),round(row[3]*1000,1)] for row in c.fetchall()][0]
+    
+    c.close()
+    print data;
+    
+    return render(request,"wifinder/wifi.html",{"wifi":data})
 
 def thanks(request):
     if 0:

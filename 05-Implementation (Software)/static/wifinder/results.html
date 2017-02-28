@@ -19,22 +19,16 @@
         <li>
             <div class="center" class="result">
                 <h3 id="wifi">
-                    {{ wifi|first }}
+                    <a href="/wifi/{{src}}-{{wifi|slice:"1:2 "|first}}">
+                        {{ wifi|first }}
+                    </a>
                 </h3>
                 <p>
                     <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
                     --
                     <span> {{ wifi|slice:"3:4"|first }}m away</span>
                 </p>
-{% comment %}
-                <form class="rate">
-                    <span>Rate: </span>
-                    <input></input>
-                    {% for i in "12345" %}
-                        <input type="radio" for 
-                    {% endfor %}
-                </form>
-            </div> {% endcomment %}
+            </div>
         </li>
     {% endfor %}
 </ol>

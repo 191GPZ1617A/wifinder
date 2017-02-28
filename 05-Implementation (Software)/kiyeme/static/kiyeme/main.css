@@ -19,23 +19,14 @@ label{
 	color: white;	
 }
 input {
-  display: inline-block;
-  float: center;
+    display: inline-block;
 }
 
 body
 {
 	background-color: #003e77;
-	color:white !important;
-}
-h1
-{
-	font-family: sans-serif;
-	color: white;
-}
-p, h3{
-	font-family: sans-serif;
-	color: white;
+	color:white;
+	font-family: "Open Sans", "San Fransisco", "Segoe UI Light", "Helvetica Neue", sans-serif;
 }
 
 #wifi{

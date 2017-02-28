@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+	<title>Wi-Finder</title>
+    {% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
+    {{c}}
+</head>
+
+<body>
+<div class="center">
+    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
+</div>
+
+<h1 style="text-align:center;">Wi-Finder</h1>
+<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
+
+    <div class = "center">
+        <h2 id="wifi">
+            {{ wifi|first }}
+        </h2>
+        <p>
+            <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
+            --
+            <span> {{ wifi|slice:"3:4"|first }}m away</span>
+        </p>
+        <form action="{% url 'thanks' %}" method="POST" class="rate">
+            {% csrf_token %}
+            <span>Rate: </span>
+            <input type="hidden" name="rate" value="0">
+            <input class="rate" type="radio" name="rate" value="0">
+            {% for i in "12345" %}
+                <input class="rate" type="radio" name="rate" value="{{ forloop.counter }}">
+            {% endfor %}
+            <input type="submit" value="Rate">
+        </form>
+    </div>
+
+
+</body>
+</body>
+
+</html>
