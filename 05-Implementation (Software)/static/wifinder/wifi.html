@@ -26,12 +26,17 @@
         <form action="{% url 'thanks' %}" method="POST" class="rate">
             {% csrf_token %}
             <span>Rate: </span>
-            <input type="hidden" name="rate" value="0">
+            <input type="hidden" name="wifiid" value="{{ wifi|slice:"1:2 "|first }}">
             <input class="rate" type="radio" name="rate" value="0">
             {% for i in "12345" %}
                 <input class="rate" type="radio" name="rate" value="{{ forloop.counter }}">
             {% endfor %}
             <input type="submit" value="Rate">
+        </form>
+        <form action = "{% url 'results' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="loc" value="{{ wifi|slice:"4:5 "|first }}">
+            <input id="sbmt" type="submit" value="Back">
         </form>
     </div>
 

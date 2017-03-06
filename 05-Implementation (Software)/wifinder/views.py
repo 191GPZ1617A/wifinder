@@ -47,7 +47,7 @@ def results(request):
             ORDER BY dist.distance
             ;""".format(*(c.fetchall()[0]))
         )
-        data = [[row[0],int(row[1]),int(row[2]),round(row[3]*1000,1)] for row in c.fetchall()]
+        data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1)] for row in c.fetchall()]
         
         c.close()
         
@@ -70,7 +70,7 @@ def wifi(request,src,dst):
         ;""" % (int(src))
     )
     res = c.execute("""
-        SELECT name, wifiid, AVG(rating), dist.distance AS distance
+        SELECT name, wifiid, AVG(rating), dist.distance AS distance, locID
         FROM ratings JOIN wifinames ON (ratings.wifiid = wifinames.id) JOIN (
             SELECT locID, (
                 6371 * acos(
@@ -86,7 +86,7 @@ def wifi(request,src,dst):
         WHERE wifiid = {0}
         ;""".format(dst,*(c.fetchall()[0]))
     )
-    data = [[row[0],int(row[1]),int(row[2]),round(row[3]*1000,1)] for row in c.fetchall()][0]
+    data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1),int(row[4])] for row in c.fetchall()][0]
     
     c.close()
     print data;
@@ -94,13 +94,12 @@ def wifi(request,src,dst):
     return render(request,"wifinder/wifi.html",{"wifi":data})
 
 def thanks(request):
-    if 0:
-        db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder")
+    if "rate" in request.POST.keys():        db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder192")
         c = db.cursor()
         c.execute("""
-            INSERT INTO ratings(wifiid,day,time,capability,quality,proxy,rating)
-            VALUES(%s,%s)
-            ;commit;"""%(",".join([request.POST["a%d"%i] for i in xrange(1,7)]),request.POST["rate"])
+            INSERT INTO ratings(wifiid,rating)
+            VALUES({},{})
+            ;COMMIT;""".format(*(request.POST[key] for key in ("wifiid","rate")))
         )
         c.close()
     return render(request,"wifinder/thanks.html",{"request":request.POST})
