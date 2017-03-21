@@ -1,47 +1,70 @@
 <!DOCTYPE html>
-<head>
-	<title>Wi-Finder</title>
-    {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
-    {{c}}
-</head>
-
-<body>
-<div class="center">
-    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
-</div>
-
-<h1 style="text-align:center;">Wi-Finder</h1>
-<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
-
-    <div class = "center">
-        <h2 id="wifi">
-            {{ wifi|first }}
-        </h2>
-        <p>
-            <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
-            --
-            <span> {{ wifi|slice:"3:4"|first }}m away</span>
-        </p>
-        <form action="{% url 'thanks' %}" method="POST" class="rate">
-            {% csrf_token %}
-            <span>Rate: </span>
-            <input type="hidden" name="wifiid" value="{{ wifi|slice:"1:2 "|first }}">
-            <input class="rate" type="radio" name="rate" value="0">
-            {% for i in "12345" %}
-                <input class="rate" type="radio" name="rate" value="{{ forloop.counter }}">
-            {% endfor %}
-            <input type="submit" value="Rate">
-        </form>
-        <form action = "{% url 'results' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="loc" value="{{ wifi|slice:"4:5 "|first }}">
-            <input id="sbmt" type="submit" value="Back">
-        </form>
-    </div>
-
-
-</body>
-</body>
-
+<html>
+    <head>
+        <title>Wi-Finder</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
+    </head>
+    <body>
+        <header>
+            <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
+            <h1 style="text-align:center;">Wi-Finder</h1>
+        </header>
+        <section id="wrapper">
+            <div class = "center" id="wrapper">
+                <h2 id="wifi">
+                    {{ wifi|first }}
+                </h2>
+                <p>
+                    <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
+                    --
+                    <span> {{ wifi|slice:"3:4"|first }}m away</span>
+                </p>
+                <form action="{% url 'thanks' %}" method="POST" class="rate">
+                    {% csrf_token %}
+                    <span>Rate: </span>
+                    <input type="hidden" name="wifiid" value="{{ wifi|slice:"1:2 "|first }}">
+                    <label>
+                        <input class="rate" type="radio" name="rate" value="0" required>
+                        <span>0</span>
+                    </label>
+                    {% for i in "12345" %}
+                        <label>
+                            <input class="rate" type="radio" name="rate" value="{{ forloop.counter }}" required>
+                            <span> {{ forloop.counter }} </span>
+                        </label>
+                    {% endfor %}
+                    <br />
+                    <label>
+                        <span>Comments:</span>
+                    </label>
+                    <textarea name="comment" onfocus="this.innerText = '';">Enter your comment here...</textarea>
+                    <input type="submit" value="Rate">
+                </form>
+                <form action = "{% url 'results' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="loc" value="{{ wifi|slice:"4:5 "|first }}">
+                    <input id="sbmt" type="submit" value="Back">
+                </form>
+                {% if reviews %}
+                    <ul id="reviews">
+                        {% for rev in reviews %}
+                            <li>
+                                <h2>
+                                    {{ rev.rate }} / 5
+                                </h2>
+                                <blockquote>
+                                    {{ rev.comment }}
+                                </blockquote>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>
+                        No one has made a review of this Wi-Fi spot yet. 
+                    </p>
+                {% endif %}
+            </div>
+        </section>
+    </body>
 </html>

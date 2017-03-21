@@ -1,49 +1,42 @@
 <!DOCTYPE html>
-<head>
-	<title>Wi-Finder</title>
-    {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
-	<script>
-	    function test(){
-            return true;
-            if (valt && vald){
-                console.log("hello");
-                return true;
-                document.getElementById("sbmt").click()
+<html>
+    <head>
+        <title>Wi-Finder</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
+        <script src="{% static 'kiyeme/jquery-3.1.1.min.js' %}"></script>
+        <script>
+            function check(){
+                s = $("select")[0].value;
+                return s!="";
             }
-	    }
-	    //SELECT wifinames.name AS wifiname, AVG(capability) AS cap, AVG(quality) AS qual, AVG(rating) AS rate, CEILING(AVG(proxy)) AS prox FROM ratings join wifinames on (wifinames.id=ratings.wifiid) WHERE day=1 AND time=1 GROUP BY wifiname ORDER BY cap DESC, qual DESC, rate DESC, prox ASC;
-	</script>
-</head>
+        </script>
+    </head>
 
-<body>
-<div class="center">
-    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
-</div>
+    <body>
+        <header>
+            <img id="logo" src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder"/>
+            <h1 style="text-align:center;">Wi-Finder</h1>
+            <p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
+        </header>
+            
 
-<h1 style="text-align:center;">Wi-Finder</h1>
-<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
-
- <div class = "center">
-    {% if error %}
-    <p>invalid input :(</p>
-    {% endif %}
-	<form action = "{% url 'results' %}" method="POST"><br />
-    {% csrf_token %}
-    <select name="loc">
-        <option for="loc" value="">Select a location...</option>
-        {% for id,loc in locations.items %}
-        <option for="loc" value="{{ id }}">{{ loc }}</option>
-        {% endfor %}
-    </select>
-    <button onclick="return test()" style="size: 200px">Go</button>
-    <input id="sbmt" type="submit" value="Submit" style = "size: 200px;visibility:hidden;">
-	</form>
- </div>
- <br /> <br />
-
-
-</body>
-</body>
-
+        <section id="wrapper">
+            <div class = "center">
+                {% if error %}
+                    <p>invalid input :(</p>
+                {% endif %}
+                <form id="loc-inp" action = "{% url 'results' %}" method="POST">
+                    {% csrf_token %}
+                    <select name="loc">
+                        <option for="loc" value="">Select a location...</option>
+                        {% for id,loc in locations.items %}
+                            <option for="loc" value="{{ id }}">{{ loc }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" onclick="return check();" value=">>">
+                </form>
+            </div>
+        </section>
+    </body>
 </html>

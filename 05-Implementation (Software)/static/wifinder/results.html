@@ -1,57 +1,41 @@
 <!DOCTYPE html>
-<head>
-	<title>Wi-Finder</title>
-    {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
-	
-</head>
+<html>
+    <head>
+        <title>Wi-Finder</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
+    </head>
 
-<body>
-<div class="center">
-    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
-</div>
-
-<h1 style="text-align:center;">Wi-Finder</h1>
-<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
-
-<ol id="results">
-    {% for wifi in results %}
-        <li>
-            <div class="center" class="result">
-                <h3 id="wifi">
-                    <a href="/wifi/{{src}}-{{wifi|slice:"1:2 "|first}}">
-                        {{ wifi|first }}
-                    </a>
-                </h3>
-                <p>
-                    <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
-                    --
-                    <span> {{ wifi|slice:"3:4"|first }}m away</span>
-                </p>
+    <body>
+        <header>
+            <img id="logo" src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder"/>
+            <h1 style="text-align:center;">Wi-Finder</h1>
+        </header>
+        <section id="wrapper">
+            <ol id="results">
+                {% for wifi in results %}
+                    <li>
+                        <div class="center" class="result">
+                            <h3 id="wifi">
+                                <a href="/wifi/{{src}}-{{wifi|slice:"1:2 "|first}}">
+                                    {{ wifi|first }}
+                                </a>
+                            </h3>
+                            <p>
+                                <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
+                                --
+                                <span> {{ wifi|slice:"3:4"|first }}m away</span>
+                            </p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ol>
+            <div class="center">
+                <form action="{% url 'thanks' %}" method="POST">
+                    {% csrf_token %}
+                    <input id="sbmt" type="submit" value="Next">
+                </form>
             </div>
-        </li>
-    {% endfor %}
-</ol>
-
-{% comment %}
- <div class = "center" style="visibility:hidden">
-    <form action="{% url 'thanks' %}" method="POST">
-        {% csrf_token %}
-        <br /><label>Rating:</label><input type="text" name="rate"><br />
-        {% for item in res %}
-        <input type="hidden" name="a{{forloop.counter}}" value="{{ item }}"></input>
-        {% endfor %}
-        <input type="submit" value="Submit" style = "size: 200px">
-	</form>
- </div>
-{% endcomment %}
-
-<div class="center">
-    <a href="{% url 'thanks' %}">Next</a>
-</div>
- <br /> <br />
-
-</body>
-</body>
-
+        </section>
+    </body>
 </html>

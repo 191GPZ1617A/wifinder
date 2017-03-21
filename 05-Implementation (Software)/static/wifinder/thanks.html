@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<head>
-	<title>Wi-Finder</title>
-    {% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
-</head>
+<html>
+    <head>
+        <title>Wi-Finder</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
+    </head>
 
-<body>
-<div class="center">
-    <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
-</div>
-
-<h1 style="text-align:center;">Wi-Finder</h1>
-<p style="text-align:center;">A CS192 Project by 2 Sabaw Guys</p>
-
-<h1 style = "text-align:center;"> Thank you for using the app!</h1>
- <div class = "center">
-	<form action = "{% url 'index' %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Next" style = "size: 200px">
-	</form>
- </div>
-
-
-</body>
-</body>
-
+    <body>
+        <header>
+            <img src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
+            <h1 style="text-align:center;">Wi-Finder</h1>
+        </header>
+        <section id="wrapper">
+            <h2> Thank you for using the app! </h2>
+            <div class = "center">
+                <form action = "{% url 'index' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Next">
+                </form>
+            </div>
+        </section>
+    </body>
 </html>
