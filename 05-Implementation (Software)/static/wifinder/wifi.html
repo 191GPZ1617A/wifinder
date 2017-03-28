@@ -12,14 +12,16 @@
         </header>
         <section id="wrapper">
             <div class = "center" id="wrapper">
-                <h2 id="wifi">
-                    {{ wifi|first }}
-                </h2>
-                <p>
-                    <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
-                    --
-                    <span> {{ wifi|slice:"3:4"|first }}m away</span>
-                </p>
+                <div class="center" id="wifiinfo">
+                    <h2 id="wifi">
+                        {{ wifi|first }}
+                    </h2>
+                    <p>
+                        <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
+                        --
+                        <span> {{ wifi|slice:"3:4"|first }}m away</span>
+                    </p>
+                </div>
                 <form action="{% url 'thanks' %}" method="POST" class="rate">
                     {% csrf_token %}
                     <span>Rate: </span>
@@ -60,7 +62,7 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>
+                    <p id="norevs">
                         No one has made a review of this Wi-Fi spot yet. 
                     </p>
                 {% endif %}
