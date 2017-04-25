@@ -14,7 +14,18 @@ def index(request):
     )
     locations = {int(i[1]):i[0] for i in c.fetchall()}
     print locations
-    return render(request,"wifinder/home.html",{"locations":locations})
+    done = False
+    if "rate" in request.POST.keys():        db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder192")
+        c = db.cursor()
+        c.execute("""
+            INSERT INTO ratings(wifiid,rating,comment)
+            VALUES({},{},"{}")
+            ;COMMIT;""".format(*(request.POST[key] for key in ("wifiid","rate","comment")))
+        )
+        c.close()
+        done = True
+    err = request.POST.get("err",False)
+    return render(request,"wifinder/home.html",{"locations":locations,"error":err,"done":done})
 
 def results(request):
 #    try:
@@ -64,6 +75,7 @@ def results(request):
         )
         data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1)] for row in c.fetchall()]
         c.close()
+        print "data",data
         
         return render(request,"wifinder/results.html",{
             "results": data,
@@ -79,13 +91,11 @@ def wifi(request,src,dst):
     res = c.execute("""
         SELECT lat, lng
         FROM locations
-        WHERE locID in (
-            SELECT location
-            FROM wifinames
-            WHERE id = %s
-        )
+        WHERE locID = %s
         ;""" % (int(src))
     )
+    coord = c.fetchall()[0]
+    print "coord",coord
     res = c.execute("""
         SELECT name, wifiid, AVG(rating), dist.distance AS distance, locID
         FROM
@@ -118,7 +128,7 @@ def wifi(request,src,dst):
                 dist.locID = wifinames.location
             )
         WHERE wifiid = {0}
-        ;""".format(dst,*(c.fetchall()[0]))
+        ;""".format(dst,*coord)
     )
     data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1),int(row[4])] for row in c.fetchall()][0]
     res = c.execute("""
@@ -127,8 +137,11 @@ def wifi(request,src,dst):
         WHERE wifiid = {}
         """.format(dst)
     )
+    print "inp",src,dst
+    print "data",data
+    print "row",row
     revs = [{"rate":int(row[0]),"comment":row[1]} for row in c.fetchall()]
-    print "revs",revs;
+    print "revs",revs
     c.close()
     
     return render(request,"wifinder/wifi.html",{"wifi":data,"reviews":revs})

@@ -31,9 +31,9 @@
                 {% endfor %}
             </ol>
             <div class="center">
-                <form action="{% url 'thanks' %}" method="POST">
+                <form class="lessround" action="{% url 'index' %}" method="POST">
                     {% csrf_token %}
-                    <input id="sbmt" type="submit" value="Next">
+                    <input id="sbmt" type="submit" value="New Search...">
                 </form>
             </div>
         </section>

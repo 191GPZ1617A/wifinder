@@ -29,7 +29,7 @@ input {
 }
 input[type="submit"] {
     font-size: 1em;
-    width:5em;
+    padding: 0.1em 0.5em;
     display: block;
     margin: 1em auto 0;
 }
@@ -72,6 +72,8 @@ li, #wifiinfo, #thanks{
     background: #3498db;
     border-radius: 2em;
     font-size: 2em;
+    padding: 0.25em;
+    margin: 0.55em;
 }
 
 li, #norevs{
@@ -82,6 +84,45 @@ li *, #thanks{
     color: #fff;
 }
 
+#reviews{
+    list-style-type:none;
+}
+
 #thanks{
     text-align: center;
+}
+
+h1,h2,h3{
+    margin: 0.25em;
+}
+
+.notround{
+    border-radius:0;
+}
+
+.lessround{
+    border-radius:0.5em;
+}
+
+.comment{
+    background:rgba(255,255,255,0.5);
+    width:calc(100% - 2em);
+    position:relative;
+    margin:1em;
+}
+
+.comment > i{
+    font-size:3em;
+    display:inline-block;
+    width:1em;
+}
+
+.comment > blockquote{
+    display:inline-block;
+    width:calc(100% - 7em);
+    margin:0;
+}
+
+#msg {
+    color:#000;
 }

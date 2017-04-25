@@ -23,8 +23,16 @@
 
         <section id="wrapper">
             <div class = "center">
-                {% if error %}
-                    <p>invalid input :(</p>
+                {% if error or done %}
+                    <div id="msg">
+                        <p>
+                            {% if error%}
+                                invalid input :(
+                            {% elif done %}
+                                Your rating was successfully recorded.
+                            {% endif %}
+                        </p>
+                    </div>
                 {% endif %}
                 <form id="loc-inp" action = "{% url 'results' %}" method="POST">
                     {% csrf_token %}

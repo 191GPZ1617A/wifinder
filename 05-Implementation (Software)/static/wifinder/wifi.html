@@ -13,16 +13,16 @@
         <section id="wrapper">
             <div class = "center" id="wrapper">
                 <div class="center" id="wifiinfo">
-                    <h2 id="wifi">
+                    <h1 id="wifi">
                         {{ wifi|first }}
-                    </h2>
+                    </h1>
                     <p>
                         <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
                         --
                         <span> {{ wifi|slice:"3:4"|first }}m away</span>
                     </p>
                 </div>
-                <form action="{% url 'thanks' %}" method="POST" class="rate">
+                <form action="{% url 'index' %}" method="POST" class="rate">
                     {% csrf_token %}
                     <span>Rate: </span>
                     <input type="hidden" name="wifiid" value="{{ wifi|slice:"1:2 "|first }}">
@@ -55,9 +55,21 @@
                                 <h2>
                                     {{ rev.rate }} / 5
                                 </h2>
-                                <blockquote>
-                                    {{ rev.comment }}
-                                </blockquote>
+                                <div class="comment">
+                                    {% if rev.comment %}
+                                        <i>"</i>
+                                        <blockquote>
+                                            <p>
+                                                {{ rev.comment }}
+                                            </p>
+                                        </blockquote>
+                                        <i>"</i>
+                                    {% else %}
+                                        <p>
+                                            (No comment)
+                                        </p>
+                                    {% endif %} 
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
