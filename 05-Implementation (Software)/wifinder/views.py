@@ -67,10 +67,11 @@ def results(request):
                     ) AS distance
                     FROM locations
                     ORDER BY distance
-                    LIMIT 0 , 5
+                    LIMIT 5
                 ) dist ON (dist.locID = wifinames.location)
             GROUP BY wifiid
             ORDER BY dist.distance
+            LIMIT 5
             ;""".format(*(c.fetchall()[0]))
         )
         data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1)] for row in c.fetchall()]
