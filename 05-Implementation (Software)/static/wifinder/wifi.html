@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            <img src="{% static 'kiyeme/logo.png' %}" alt="Wi-Finder_logo" width="174" height="142"/>
+            <img src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder" />
             <h1 style="text-align:center;">Wi-Finder</h1>
         </header>
         <section id="wrapper">
@@ -52,9 +52,12 @@
                     <ul id="reviews">
                         {% for rev in reviews %}
                             <li>
-                                <h2>
+                                <h2 class="rating">
                                     {{ rev.rate }} / 5
                                 </h2>
+                                <time>
+                                    {{ rev.stamp }}
+                                </time>
                                 <div class="comment">
                                     {% if rev.comment %}
                                         <i>"</i>

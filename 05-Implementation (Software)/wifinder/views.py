@@ -18,8 +18,8 @@ def index(request):
     if "rate" in request.POST.keys():        db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder192")
         c = db.cursor()
         c.execute("""
-            INSERT INTO ratings(wifiid,rating,comment)
-            VALUES({},{},"{}")
+            INSERT INTO ratings(wifiid,rating,comment,stamp)
+            VALUES({},{},"{}",NOW())
             ;COMMIT;""".format(*(request.POST[key] for key in ("wifiid","rate","comment")))
         )
         c.close()
@@ -44,7 +44,7 @@ def results(request):
                 (
                     SELECT *
                     FROM ratings UNION (
-                        SELECT 0, id, 0, ""
+                        SELECT 0, NOW(), id, 0, ""
                         FROM wifinames
                         WHERE id NOT IN (
                             SELECT wifiid
@@ -102,7 +102,7 @@ def wifi(request,src,dst):
             (
                 SELECT *
                 FROM ratings UNION (
-                    SELECT 0, id, 0, ""
+                    SELECT 0, NOW(), id, 0, ""
                     FROM wifinames
                     WHERE id NOT IN (
                         SELECT wifiid
@@ -132,7 +132,7 @@ def wifi(request,src,dst):
     )
     data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1),int(row[4])] for row in c.fetchall()][0]
     res = c.execute("""
-        SELECT rating, comment
+        SELECT rating, comment, stamp
         FROM ratings
         WHERE wifiid = {}
         """.format(dst)
@@ -140,7 +140,7 @@ def wifi(request,src,dst):
     print "inp",src,dst
     print "data",data
     print "row",row
-    revs = [{"rate":int(row[0]),"comment":row[1]} for row in c.fetchall()]
+    revs = [{"rate":int(row[0]),"comment":row[1],"stamp":row[2]} for row in c.fetchall()]
     print "revs",revs
     c.close()
     
