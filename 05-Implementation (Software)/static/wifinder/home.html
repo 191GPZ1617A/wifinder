@@ -5,12 +5,7 @@
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'kiyeme/main.css' %}">
         <script src="{% static 'kiyeme/jquery-3.1.1.min.js' %}"></script>
-        <script>
-            function check(){
-                s = $("select")[0].value;
-                return s!="";
-            }
-        </script>
+        <script src="../../kiyeme/static/kiyeme/jquery-3.1.1.min.js"></script>
     </head>
 
     <body>
@@ -26,7 +21,7 @@
                 {% if error or done %}
                     <div id="msg">
                         <p>
-                            {% if error%}
+                            {% if error %}
                                 invalid input :(
                             {% elif done %}
                                 Your rating was successfully recorded.
@@ -36,15 +31,25 @@
                 {% endif %}
                 <form id="loc-inp" action = "{% url 'results' %}" method="POST">
                     {% csrf_token %}
-                    <select name="loc">
+                    <select name="loc" required>
                         <option for="loc" value="">Select a location...</option>
                         {% for id,loc in locations.items %}
                             <option for="loc" value="{{ id }}">{{ loc }}</option>
                         {% endfor %}
                     </select>
-                    <input type="submit" onclick="return check();" value=">>">
+                    <label for="dist"> Enable Search by Radius:</label>
+                    <input id="dist"type="checkbox" name="dist" onchange="toggleDist(this.checked);"></input>
+                    <label for="rad"> Search Radius </label>
+                    <input id="rad" type="number" name="rad" min="10" required disabled></input>
+                    <span>meters</span>
+                    <input type="submit" value="Search for Wi-Fi">
                 </form>
             </div>
         </section>
+        <script>
+            function toggleDist(tog){
+                $('input[name="rad"]')[0].disabled = !tog;
+            }
+        </script>
     </body>
 </html>

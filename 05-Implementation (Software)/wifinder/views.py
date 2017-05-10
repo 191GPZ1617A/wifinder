@@ -38,7 +38,7 @@ def results(request):
             WHERE locID = %s
             ;""" % request.POST["loc"]
         )
-        res = c.execute("""
+        res = c.execute(("""
             SELECT name, wifiid, AVG(rating), dist.distance AS distance
             FROM
                 (
@@ -56,23 +56,33 @@ def results(request):
                     rates.wifiid = wifinames.id
                 )
                 JOIN (
-                    SELECT locID, (
-                        6371 * acos(
+                    SELECT locID, distance
+                    FROM (
+                        SELECT locID, 6371 * acos(
                             cos(radians({0})) *
                             cos(radians(lat)) *
                             cos(radians(lng) - radians({1})) +
                             sin(radians({0})) *
                             sin(radians(lat))
-                        )
-                    ) AS distance
-                    FROM locations
+                        ) AS distance
+                        FROM locations
+                    ) d
+                    """
+                        + ("WHERE distance < {2}/1000" if "dist" in request.POST else "") +
+                    """
                     ORDER BY distance
                     LIMIT 5
                 ) dist ON (dist.locID = wifinames.location)
             GROUP BY wifiid
             ORDER BY dist.distance
             LIMIT 5
-            ;""".format(*(c.fetchall()[0]))
+            ;""").format(*(
+                (
+                    c.fetchall()[0]
+                ) + (
+                    (request.POST["rad"],) if "rad" in request.POST else ()
+                )
+            ))
         )
         data = [[row[0],int(round(row[1])),int(round(row[2])),round(row[3]*1000,1)] for row in c.fetchall()]
         c.close()
@@ -80,7 +90,8 @@ def results(request):
         
         return render(request,"wifinder/results.html",{
             "results": data,
-            "src": request.POST["loc"]
+            "src": request.POST["loc"],
+            "rad": request.POST["rad"] if "rad" in request.POST else 0
         })
 #    except Exception:
 #        return index(request)
@@ -145,7 +156,7 @@ def wifi(request,src,dst):
     print "revs",revs
     c.close()
     
-    return render(request,"wifinder/wifi.html",{"wifi":data,"reviews":revs})
+    return render(request,"wifinder/wifi.html",{"wifi":data,"reviews":revs,"src":src,"dst":dst})
 
 def thanks(request):
     if "rate" in request.POST.keys():        db = MySQLdb.connect(user="clientlogin",passwd="clientw3w",db="wifinder192")

@@ -8,7 +8,7 @@
 	float: right;
 }
 
-header {
+header, footer{
     text-align: center;
     background: #2980b9;
     padding: 2em 0;
@@ -51,9 +51,67 @@ form{
     padding: 2em;
 }
 
+#dist{
+    margin-right: 2em;
+}
+
+#rad{
+    width:3em;
+}
+
 #wifi{
     font-size: 2em;
 }
+
+.stars{
+    padding: 0;
+    margin: 0;
+}
+
+.revrate .stars{
+    font-size:0.5em;
+}
+
+p.stars{
+    text-align: center;
+}
+
+.stars > *{    height: 1em;
+    width: 1em;
+}
+
+input.star, input.starx{
+    font-size:5em;
+    height: 1em;
+    width: 1em;
+    cursor: pointer;
+}
+.stars .star, .starx{
+    display: inline-block;
+    position: relative;
+    -webkit-appearance: none;
+}
+
+.stars .star::after, .starx::after{
+    width:100%;
+    height:100%;
+    display: block;
+    content:'';
+}
+
+.starx::after {background: url("starx.png") center center / 1em 1em;}
+
+span .star::after{background: url("star_.png") center center / 1em 1em;}
+span.stars[data-rate="1"] .star:nth-child(-n+1)::after,
+span.stars[data-rate="2"] .star:nth-child(-n+2)::after,
+span.stars[data-rate="3"] .star:nth-child(-n+3)::after,
+span.stars[data-rate="4"] .star:nth-child(-n+4)::after,
+span.stars[data-rate="5"] .star:nth-child(-n+5)::after{
+    background-image: url("star.png");
+}
+
+p.stars .star::after {background: url("star.png") center center / 1em 1em;}
+p.stars :checked ~ .star::after{background-image: url("star_.png");}
 
 textarea {
     height: 5em;
@@ -76,7 +134,7 @@ li, #wifiinfo, #thanks{
     margin: 0.55em;
 }
 
-li, #norevs{
+li, #norevs, #reshead{
     color: #000;
 }
 
@@ -87,6 +145,10 @@ li *, #thanks{
 #reviews{
     list-style-type:none;
     -webkit-padding-start:0;
+}
+
+#reviews li{
+    position:relative;
 }
 
 #thanks{
@@ -105,11 +167,48 @@ h1,h2,h3{
     border-radius:0.5em;
 }
 
+#reshead{
+    text-align: center;
+}
+
+#results, #reviews, #norevs{
+    margin-bottom: 5.5em;
+}
+
+footer{
+    position:fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    padding:0;
+}
+
+footer form{
+    border-radius: 0;
+    margin: 0;
+    padding: 1em;
+    background: none;
+}
+
+.revrate{
+    display:inline-block;
+    width: 4em;
+    padding:0;
+    margin:1em 0 0 0;
+    font-size: 1em;
+    line-height: 0.5em;
+    vertical-align: top;
+}
+
+.revrate time{
+    font-size: 0.5em;/**/
+}
+
 .comment{
-    background:rgba(255,255,255,0.5);
-    width:calc(100% - 2em);
+    background:rgba(0,0,0,0.5);
+    width:calc(100% - 7em);
     position:relative;
     margin:1em;
+    display:inline-block;
 }
 
 .comment > i{

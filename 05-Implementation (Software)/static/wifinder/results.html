@@ -8,10 +8,20 @@
 
     <body>
         <header>
-            <img id="logo" src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder"/>
+            <a href="{% url 'index' %}">
+                <img id="logo" src="{% static 'kiyeme/logo1.png' %}" alt="Wi-Finder"/>
+            </a>
             <h1 style="text-align:center;">Wi-Finder</h1>
         </header>
         <section id="wrapper">
+            <h1 id="reshead">
+                Here are the best Wi-Fi spots
+                {% if rad %}
+                    within {{rad}} meters:
+                {% else %}
+                    around:
+                {% endif %}
+            </h1>
             <ol id="results">
                 {% for wifi in results %}
                     <li>
@@ -22,7 +32,11 @@
                                 </a>
                             </h3>
                             <p>
-                                <span> {{ wifi|slice:"2:3"|first }} / 5 </span>
+                                <span class="stars" data-rate="{{ wifi|slice:"2:3"|first }}{% comment %}"{% endcomment %}"> 
+                                    {% for i in "12345" %}
+                                    <i class="star"></i>
+                                    {% endfor %}
+                                </span>
                                 --
                                 <span> {{ wifi|slice:"3:4"|first }}m away</span>
                             </p>
@@ -30,12 +44,12 @@
                     </li>
                 {% endfor %}
             </ol>
-            <div class="center">
-                <form class="lessround" action="{% url 'index' %}" method="POST">
-                    {% csrf_token %}
-                    <input id="sbmt" type="submit" value="New Search...">
-                </form>
-            </div>
         </section>
+        <footer id="newsearch">
+            <form action="{% url 'index' %}" method="POST">
+                {% csrf_token %}
+                <input id="sbmt" type="submit" value="New Search...">
+            </form>
+        </footer>
     </body>
 </html>
