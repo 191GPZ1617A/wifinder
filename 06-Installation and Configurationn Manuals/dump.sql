@@ -19,6 +19,11 @@
 -- Table structure for table `auth_group`
 --
 
+CREATE USER IF NOT EXISTS clientlogin@localhost IDENTIFIED BY 'clientw3w';
+CREATE DATABASE IF NOT EXISTS wifinder192;
+USE wifinder192;
+GRANT SELECT, INSERT, UPDATE, ON wifinder192.* TO clientlogin;
+
 DROP TABLE IF EXISTS `auth_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
